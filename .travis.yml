@@ -45,7 +45,7 @@ before_script:
   - mysql -e 'SET @@GLOBAL.wait_timeout=1200'
 
 script:
-  - ant -buildfile sites/all/modules/islandora/build.xml lint
+  - find . -type f \( -name '*.php' -o -name '*.inc' -o -name '*.module' -o -name '*.install' -o -name '*.test' \) -exec php -l {} \;
   - $ISLANDORA_DIR/tests/scripts/line_endings.sh sites/all/modules/islandora
   - drush coder-review --reviews=production,security,style,i18n,potx,sniffer islandora
   - phpcpd --names *.module,*.inc,*.test sites/all/modules/islandora
