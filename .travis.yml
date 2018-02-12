@@ -43,12 +43,8 @@ before_install:
 before_script:
   # Mysql might time out for long tests, increase the wait timeout.
   - mysql -e 'SET @@GLOBAL.wait_timeout=1200'
-
 script:
-  - find $TRAVIS_BUILD_DIR -type f \( -name '*.php' -o -name '*.inc' -o -name '*.module' -o -name '*.install' -o -name '*.test' \) -exec php -l {} \;
-  - $ISLANDORA_DIR/tests/scripts/line_endings.sh sites/all/modules/islandora
-  - drush coder-review --reviews=production,security,style,i18n,potx,sniffer islandora
-  - phpcpd --names *.module,*.inc,*.test sites/all/modules/islandora
+  - $ISLANDORA_DIR/tests/scripts/travis_script.sh sites/all/modules/islandora
   - php scripts/run-tests.sh --php `phpenv which php` --url http://localhost:8081 --verbose "Islandora"
 after_failure:
   - $ISLANDORA_DIR/tests/scripts/travis_after_failure.sh
